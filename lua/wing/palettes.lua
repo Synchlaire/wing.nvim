@@ -33,6 +33,26 @@ M.dark = {
   border = "#222222",
   border_focus = "#FF6B35",
   cursor_line = "#0A0A0A",
+
+  -- Terminal (ANSI 16 colors)
+  terminal = {
+    "#0A0A0A", -- black
+    "#E06C75", -- red
+    "#4EC9B0", -- green
+    "#D19A66", -- yellow
+    "#61AFEF", -- blue
+    "#C678DD", -- magenta
+    "#56B6C2", -- cyan
+    "#888888", -- white (dim)
+    "#555555", -- bright black
+    "#FF6B35", -- bright red (accent)
+    "#5AD4C0", -- bright green
+    "#E5C07B", -- bright yellow
+    "#7EC8F2", -- bright blue
+    "#D8A0E8", -- bright magenta
+    "#6CC9D4", -- bright cyan
+    "#E8E8E8", -- bright white
+  },
 }
 
 M.light = {
@@ -68,6 +88,26 @@ M.light = {
   border = "#C5C0C0",
   border_focus = "#E85D04",
   cursor_line = "#E5E2E2",
+
+  -- Terminal (ANSI 16 colors)
+  terminal = {
+    "#DDDADA", -- black (light bg surface)
+    "#E63946", -- red
+    "#2A9D8F", -- green
+    "#F4A261", -- yellow
+    "#4361EE", -- blue
+    "#9B59B6", -- magenta
+    "#2A9D8F", -- cyan
+    "#444444", -- white (dim text)
+    "#C5C0C0", -- bright black
+    "#E85D04", -- bright red (accent)
+    "#35B8A6", -- bright green
+    "#F5B77A", -- bright yellow
+    "#5A7DF7", -- bright blue
+    "#B07CC8", -- bright magenta
+    "#35B8A6", -- bright cyan
+    "#1A1A1A", -- bright white
+  },
 }
 
 return M
