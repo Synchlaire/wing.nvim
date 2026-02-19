@@ -112,16 +112,4 @@ function M.load(variant)
   end
 end
 
---- Get the resolved palette for a variant (useful for export/integrations)
----@param variant? "dark"|"light"
----@return table
-function M.get_palette(variant)
-  variant = variant or (vim.o.background == "dark" and "dark" or "light")
-  local palette = vim.deepcopy(variant == "dark" and palettes.dark or palettes.light)
-  if M._opts.on_colors then
-    M._opts.on_colors(palette)
-  end
-  return palette
-end
-
 return M
