@@ -1,112 +1,112 @@
 local M = {}
 
 M.dark = {
-  -- Background layers (pure black to subtle elevation)
-  bg = "#000000",       -- OLED pure black
-  bg_alt = "#0A0A0A",   -- Barely elevated surface
-  bg_float = "#111111", -- Floating windows
+  -- Background layers (Voodoo — pure black to subtle elevation)
+  bg = "#000000",       -- void-0: OLED pure black
+  bg_alt = "#0A0A0A",   -- void-05: barely elevated surface
+  bg_float = "#111111", -- void-1: floating windows
 
   -- Text (comfortable contrast)
-  fg = "#E8E8E8",       -- Primary: softened white
-  fg_dim = "#888888",   -- Secondary: muted gray
-  fg_muted = "#555555", -- Muted: comments, hints
+  fg = "#ebebeb",       -- void-6: primary text
+  fg_dim = "#949494",   -- void-5: secondary text
+  fg_muted = "#6a6a6a", -- void-4: comments, hints
 
-  -- Accents (refined, not neon)
-  accent = "#FF6B35",           -- Primary: warm orange
-  accent_dim = "#CC4A1E",       -- Darker for hover states
-  accent_secondary = "#4EC9B0", -- Teal-green: strings, success
+  -- Accents (Wing OS tokens)
+  accent = "#C0C8D0",           -- Focus: cool white
+  accent_dim = "#949494",       -- Dimmed focus
+  accent_secondary = "#00FF41", -- Positive: neon green (strings, success)
 
   -- Semantic
-  error = "#E06C75", -- Soft red
-  warn = "#D19A66",  -- Warm amber
-  info = "#61AFEF",  -- Soft blue
-  hint = "#4EC9B0",  -- Teal
+  error = "#FF3366", -- Negative: hot pink
+  warn = "#C0C8D0",  -- Focus: cool white (warnings)
+  info = "#00BFFF",  -- Info: cyan
+  hint = "#00BFFF",  -- Info: cyan
 
   -- Git/diff
-  add = "#4EC9B0",
-  change = "#FF6B35",
-  delete = "#E06C75",
+  add = "#00FF41",
+  change = "#C0C8D0",
+  delete = "#FF3366",
 
   -- UI elements
-  selection = "#1A1A1A",
-  comment = "#555555",
-  border = "#222222",
-  border_focus = "#FF6B35",
-  cursor_line = "#0A0A0A",
+  selection = "#1A1A1A",  -- void-15
+  comment = "#6a6a6a",    -- void-4
+  border = "#2a2a2a",     -- void-2
+  border_focus = "#C0C8D0",
+  cursor_line = "#0A0A0A", -- void-05
 
   -- Terminal (ANSI 16 colors)
   terminal = {
-    "#0A0A0A", -- black
-    "#E06C75", -- red
-    "#4EC9B0", -- green
-    "#D19A66", -- yellow
-    "#61AFEF", -- blue
-    "#C678DD", -- magenta
-    "#56B6C2", -- cyan
-    "#888888", -- white (dim)
-    "#555555", -- bright black
-    "#FF6B35", -- bright red (accent)
-    "#5AD4C0", -- bright green
-    "#E5C07B", -- bright yellow
-    "#7EC8F2", -- bright blue
-    "#D8A0E8", -- bright magenta
-    "#6CC9D4", -- bright cyan
-    "#E8E8E8", -- bright white
+    "#0A0A0A", -- black (void-05)
+    "#FF3366", -- red (negative)
+    "#00FF41", -- green (positive)
+    "#FFB833", -- yellow
+    "#C0C8D0", -- blue (focus)
+    "#9070a8", -- magenta
+    "#00BFFF", -- cyan (info)
+    "#949494", -- white (void-5)
+    "#6a6a6a", -- bright black (void-4)
+    "#FF5C85", -- bright red
+    "#33FF66", -- bright green
+    "#FFCC66", -- bright yellow
+    "#C0C8D0", -- bright blue (focus)
+    "#a888c7", -- bright magenta
+    "#33CCFF", -- bright cyan
+    "#ebebeb", -- bright white (void-6)
   },
 }
 
 M.light = {
-  -- Background (warm off-white)
-  bg = "#EDEAEA",
-  bg_alt = "#E5E2E2",
-  bg_float = "#DDDADA",
+  -- Background (LittleWing — warm parchment)
+  bg = "#EDEAEA",       -- void-0
+  bg_alt = "#E5E2E2",   -- near-bg
+  bg_float = "#DDDADA", -- surface
 
   -- Text (high contrast)
-  fg = "#1A1A1A",
-  fg_dim = "#444444",
-  fg_muted = "#777777",
+  fg = "#141414",       -- void-6
+  fg_dim = "#505050",   -- void-5
+  fg_muted = "#787878", -- void-4
 
-  -- Accents (saturated but controlled)
-  accent = "#E85D04",
-  accent_dim = "#C44D00",
-  accent_secondary = "#2A9D8F",
+  -- Accents (darkened for light backgrounds)
+  accent = "#606870",           -- Focus: cool grey
+  accent_dim = "#787878",       -- Dimmed focus
+  accent_secondary = "#00CC33", -- Positive: dark neon green
 
   -- Semantic
-  error = "#E63946",
-  warn = "#F4A261",
-  info = "#4361EE",
-  hint = "#2A9D8F",
+  error = "#D92D57", -- Negative: dark hot pink
+  warn = "#606870",  -- Focus: cool grey
+  info = "#009FD4",  -- Info: dark cyan
+  hint = "#009FD4",  -- Info: dark cyan
 
   -- Git/diff
-  add = "#2A9D8F",
-  change = "#E85D04",
-  delete = "#E63946",
+  add = "#00CC33",
+  change = "#606870",
+  delete = "#D92D57",
 
   -- UI elements
   selection = "#D5D2D2",
-  comment = "#8B8686",
+  comment = "#787878",   -- void-4
   border = "#C5C0C0",
-  border_focus = "#E85D04",
+  border_focus = "#606870",
   cursor_line = "#E5E2E2",
 
   -- Terminal (ANSI 16 colors)
   terminal = {
-    "#DDDADA", -- black (light bg surface)
-    "#E63946", -- red
-    "#2A9D8F", -- green
-    "#F4A261", -- yellow
-    "#4361EE", -- blue
-    "#9B59B6", -- magenta
-    "#2A9D8F", -- cyan
-    "#444444", -- white (dim text)
+    "#DDDADA", -- black (light surface)
+    "#D92D57", -- red (negative)
+    "#00CC33", -- green (positive)
+    "#B38A00", -- yellow
+    "#606870", -- blue (focus)
+    "#806098", -- magenta
+    "#009FD4", -- cyan (info)
+    "#505050", -- white (dim text)
     "#C5C0C0", -- bright black
-    "#E85D04", -- bright red (accent)
-    "#35B8A6", -- bright green
-    "#F5B77A", -- bright yellow
-    "#5A7DF7", -- bright blue
-    "#B07CC8", -- bright magenta
-    "#35B8A6", -- bright cyan
-    "#1A1A1A", -- bright white
+    "#FF3366", -- bright red
+    "#00FF41", -- bright green
+    "#FFB833", -- bright yellow
+    "#C0C8D0", -- bright blue (focus bright)
+    "#9070a8", -- bright magenta
+    "#00BFFF", -- bright cyan
+    "#141414", -- bright white
   },
 }
 
