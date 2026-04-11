@@ -2,3 +2,7 @@
 *.swp
 *.swo
 *~
+
+# Local Claude Code workspace
+.claude/
+CLAUDE.md

@@ -1,5 +1,11 @@
---- Wing colorscheme — "The Void" Design System
---- Premium, refined, calm. 95% monochrome with intentional accents.
+--- Wing colorscheme — Wing OS "Void Scale" design system.
+--- The Living Archive / Technical Archivist: 95% monochrome, color is
+--- strictly semantic (focus / positive / negative / warn / info).
+---
+--- Variants (Hendrix tracks):
+---   joe          default dark, #0a0a0a soft-lift, IPS-friendly
+---   voodoo       AMOLED, true #000000, bumped contrast
+---   little_wing  warm parchment #edeaea, high-glare / long-form reading
 local M = {}
 
 local palettes = require("wing.palettes")
@@ -46,20 +52,42 @@ local function apply_transparency(transparent_groups)
   end
 end
 
----@param variant? "dark"|"light"|"auto"
+--- Map a variant name to a palette table in `palettes`.
+--- Accepts canonical Wing OS names (joe/voodoo/little_wing), the legacy
+--- dark/light/auto aliases, and the `little-wing` hyphenated spelling used
+--- by the colors/ shim filename.
+---@param variant string
+---@return table
+local function resolve_palette(variant)
+  if variant == "auto" then
+    -- Default dark = joe (the spec-designated daily driver), not voodoo.
+    -- Voodoo is opt-in for AMOLED panels.
+    variant = vim.o.background == "dark" and "joe" or "little_wing"
+  elseif variant == "dark" then
+    variant = "joe"
+  elseif variant == "light" then
+    variant = "little_wing"
+  elseif variant == "little-wing" then
+    variant = "little_wing"
+  end
+
+  local p = palettes[variant]
+  if not p then
+    vim.notify(
+      "wing.nvim: unknown variant '" .. variant .. "', falling back to joe",
+      vim.log.levels.WARN
+    )
+    p = palettes.joe
+  end
+  return vim.deepcopy(p)
+end
+
+---@param variant? "joe"|"voodoo"|"little_wing"|"dark"|"light"|"auto"
 function M.load(variant)
   variant = variant or "auto"
   local opts = M._opts
 
-  -- Resolve palette
-  local palette
-  if variant == "auto" then
-    palette = vim.o.background == "dark" and vim.deepcopy(palettes.dark) or vim.deepcopy(palettes.light)
-  elseif variant == "dark" then
-    palette = vim.deepcopy(palettes.dark)
-  else
-    palette = vim.deepcopy(palettes.light)
-  end
+  local palette = resolve_palette(variant)
 
   -- User palette mutations
   if opts.on_colors then

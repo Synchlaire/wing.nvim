@@ -1,113 +1,212 @@
+--- Wing OS "Void Scale" palettes.
+--- Three variants named after Hendrix tracks:
+---   - joe          Default dark. Soft-lifted #0a0a0a, IPS-friendly daily driver.
+---   - voodoo       AMOLED. True #000000 abyss, bumped contrast for night work.
+---   - little_wing  Warm parchment #edeaea, long-form reading and high-glare.
+---
+--- Every palette carries the canonical void_0..void_6 scale (with half-steps
+--- void_05 / void_15 / void_55) plus four semantic accents: focus, positive,
+--- negative, info. Plus one derived `warn` per variant that isn't in the
+--- design tokens — tuned here so diagnostics don't fall off a cliff. If the
+--- Wing OS tokens add an official warn, update `warn` to match.
+---
+--- Legacy keys (bg, fg, accent, ...) are aliases onto the void scale so
+--- highlights.lua can address both the new and old shape. Don't address void
+--- steps directly from highlights — go through the semantic alias so a future
+--- palette shuffle is a one-file change.
 local M = {}
 
-M.dark = {
-  -- Background layers (Voodoo — pure black to subtle elevation)
-  bg = "#000000",       -- void-0: OLED pure black
-  bg_alt = "#0A0A0A",   -- void-05: barely elevated surface
-  bg_float = "#111111", -- void-1: floating windows
+--- Build a palette from a raw void/accent spec.
+--- @param spec table
+--- @return table
+local function build(spec)
+  local v = spec.void
+  local a = spec.accents
+  return {
+    -- Canonical void scale (always addressable by tools/tests)
+    void_0 = v[1],
+    void_05 = v[2],
+    void_1 = v[3],
+    void_15 = v[4],
+    void_2 = v[5],
+    void_3 = v[6],
+    void_4 = v[7],
+    void_5 = v[8],
+    void_55 = v[9],
+    void_6 = v[10],
 
-  -- Text (comfortable contrast)
-  fg = "#ebebeb",       -- void-6: primary text
-  fg_dim = "#949494",   -- void-5: secondary text
-  fg_muted = "#6a6a6a", -- void-4: comments, hints
+    -- Semantic accents (sparingly used)
+    focus = a.focus,
+    positive = a.positive,
+    negative = a.negative,
+    info = a.info,
+    warn = a.warn,
 
-  -- Accents (Wing OS tokens)
-  accent = "#C0C8D0",           -- Focus: cool white
-  accent_dim = "#949494",       -- Dimmed focus
-  accent_secondary = "#00FF41", -- Positive: neon green (strings, success)
+    -- ── Legacy aliases ───────────────────────────────────────
+    -- Backgrounds collapse onto the low end of the scale.
+    bg = v[1],        -- void_0    — editor background
+    bg_alt = v[3],    -- void_1    — surfaces, statusline
+    bg_float = v[4],  -- void_15   — floats, popups
+    -- Text progression.
+    fg = v[10],       -- void_6    — primary text
+    fg_dim = v[9],    -- void_55   — secondary bright
+    fg_muted = v[7],  -- void_4    — metadata, hints
+    -- Accent aliases (single primary only — no secondary decorative).
+    accent = a.focus,
+    accent_dim = a.focus_dim,
+    -- Intentionally omit accent_secondary: color is semantic, not decorative.
+    -- highlights.lua must not reference it.
+    -- Semantic error/warn/info/hint map onto the semantic accents.
+    error = a.negative,
+    hint = a.positive,
+    -- UI chrome.
+    selection = v[5],        -- void_2
+    comment = v[7],          -- void_4 — metadata tier
+    border = v[6],           -- void_3
+    border_focus = a.focus,
+    cursor_line = v[2],      -- void_05
+    -- Git/diff collapsed onto semantic tokens.
+    add = a.positive,
+    change = a.warn,
+    delete = a.negative,
+    -- Terminal ANSI map.
+    terminal = spec.terminal,
+  }
+end
 
-  -- Semantic
-  error = "#FF3366", -- Negative: hot pink
-  warn = "#C0C8D0",  -- Focus: cool white (warnings)
-  info = "#00BFFF",  -- Info: cyan
-  hint = "#00BFFF",  -- Info: cyan
-
-  -- Git/diff
-  add = "#00FF41",
-  change = "#C0C8D0",
-  delete = "#FF3366",
-
-  -- UI elements
-  selection = "#1A1A1A",  -- void-15
-  comment = "#6a6a6a",    -- void-4
-  border = "#2a2a2a",     -- void-2
-  border_focus = "#C0C8D0",
-  cursor_line = "#0A0A0A", -- void-05
-
-  -- Terminal (ANSI 16 colors)
-  terminal = {
-    "#0A0A0A", -- black (void-05)
-    "#FF3366", -- red (negative)
-    "#00FF41", -- green (positive)
-    "#FFB833", -- yellow
-    "#C0C8D0", -- blue (focus)
-    "#9070a8", -- magenta
-    "#00BFFF", -- cyan (info)
-    "#949494", -- white (void-5)
-    "#6a6a6a", -- bright black (void-4)
-    "#FF5C85", -- bright red
-    "#33FF66", -- bright green
-    "#FFCC66", -- bright yellow
-    "#C0C8D0", -- bright blue (focus)
-    "#a888c7", -- bright magenta
-    "#33CCFF", -- bright cyan
-    "#ebebeb", -- bright white (void-6)
+--- Joe — default dark. The daily driver.
+M.joe = build({
+  void = {
+    "#0a0a0a", -- void_0  background
+    "#0f0f0f", -- void_05 near-bg
+    "#141414", -- void_1  surface
+    "#1c1c1c", -- void_15 elevated / hover
+    "#2a2a2a", -- void_2  subtle border
+    "#383838", -- void_3  border / divider
+    "#6a6a6a", -- void_4  hint / metadata
+    "#949494", -- void_5  secondary
+    "#b8b8b8", -- void_55 secondary bright
+    "#ebebeb", -- void_6  primary text
   },
-}
-
-M.light = {
-  -- Background (LittleWing — warm parchment)
-  bg = "#EDEAEA",       -- void-0
-  bg_alt = "#E5E2E2",   -- near-bg
-  bg_float = "#DDDADA", -- surface
-
-  -- Text (high contrast)
-  fg = "#141414",       -- void-6
-  fg_dim = "#505050",   -- void-5
-  fg_muted = "#787878", -- void-4
-
-  -- Accents (darkened for light backgrounds)
-  accent = "#606870",           -- Focus: cool grey
-  accent_dim = "#787878",       -- Dimmed focus
-  accent_secondary = "#00CC33", -- Positive: dark neon green
-
-  -- Semantic
-  error = "#D92D57", -- Negative: dark hot pink
-  warn = "#606870",  -- Focus: cool grey
-  info = "#009FD4",  -- Info: dark cyan
-  hint = "#009FD4",  -- Info: dark cyan
-
-  -- Git/diff
-  add = "#00CC33",
-  change = "#606870",
-  delete = "#D92D57",
-
-  -- UI elements
-  selection = "#D5D2D2",
-  comment = "#787878",   -- void-4
-  border = "#C5C0C0",
-  border_focus = "#606870",
-  cursor_line = "#E5E2E2",
-
-  -- Terminal (ANSI 16 colors)
-  terminal = {
-    "#DDDADA", -- black (light surface)
-    "#D92D57", -- red (negative)
-    "#00CC33", -- green (positive)
-    "#B38A00", -- yellow
-    "#606870", -- blue (focus)
-    "#806098", -- magenta
-    "#009FD4", -- cyan (info)
-    "#505050", -- white (dim text)
-    "#C5C0C0", -- bright black
-    "#FF3366", -- bright red
-    "#00FF41", -- bright green
-    "#FFB833", -- bright yellow
-    "#C0C8D0", -- bright blue (focus bright)
-    "#9070a8", -- bright magenta
-    "#00BFFF", -- bright cyan
-    "#141414", -- bright white
+  accents = {
+    focus = "#5b98c0",
+    focus_dim = "#3f6e8e",
+    positive = "#5aad68",
+    negative = "#c45858",
+    info = "#00bfff",
+    -- Derived: muted amber that sits between positive and negative in
+    -- perceptual space without drifting into decorative territory.
+    warn = "#c8944d",
   },
-}
+  terminal = {
+    "#141414", -- 0  black       → void_1
+    "#c45858", -- 1  red         → negative
+    "#5aad68", -- 2  green       → positive
+    "#c8944d", -- 3  yellow      → warn
+    "#5b98c0", -- 4  blue        → focus
+    "#9b6ea8", -- 5  magenta     (harmonized muted violet)
+    "#00bfff", -- 6  cyan        → info
+    "#b8b8b8", -- 7  white       → void_55
+    "#6a6a6a", -- 8  bright blk  → void_4
+    "#d46a6a", -- 9  bright red
+    "#6cc17a", -- 10 bright grn
+    "#d6a55d", -- 11 bright ylw
+    "#7bb0d0", -- 12 bright blu
+    "#b084bf", -- 13 bright mag
+    "#4dd0ff", -- 14 bright cyn
+    "#ebebeb", -- 15 bright wht → void_6
+  },
+})
+
+--- Voodoo — AMOLED. True black, bumped contrast.
+M.voodoo = build({
+  void = {
+    "#000000", -- void_0
+    "#050505", -- void_05
+    "#0a0a0a", -- void_1
+    "#121212", -- void_15
+    "#1c1c1c", -- void_2
+    "#2e2e2e", -- void_3
+    "#6a6a6a", -- void_4
+    "#969696", -- void_5
+    "#bcbcbc", -- void_55
+    "#e8e8e8", -- void_6
+  },
+  accents = {
+    focus = "#5b98c0",
+    focus_dim = "#3f6e8e",
+    positive = "#5aad68",
+    negative = "#c45858",
+    info = "#00bfff",
+    warn = "#c8944d",
+  },
+  terminal = {
+    "#0a0a0a",
+    "#c45858",
+    "#5aad68",
+    "#c8944d",
+    "#5b98c0",
+    "#9b6ea8",
+    "#00bfff",
+    "#bcbcbc",
+    "#6a6a6a",
+    "#d46a6a",
+    "#6cc17a",
+    "#d6a55d",
+    "#7bb0d0",
+    "#b084bf",
+    "#4dd0ff",
+    "#e8e8e8",
+  },
+})
+
+--- Little Wing — warm parchment, inverse monochrome.
+M.little_wing = build({
+  void = {
+    "#edeaea", -- void_0
+    "#e8e8e8", -- void_05
+    "#dcdcdc", -- void_1
+    "#d0d0d0", -- void_15
+    "#c0c0c0", -- void_2
+    "#a8a8a8", -- void_3
+    "#787878", -- void_4
+    "#505050", -- void_5
+    "#303030", -- void_55
+    "#141414", -- void_6
+  },
+  accents = {
+    focus = "#3a7ba8",
+    focus_dim = "#275a80",
+    positive = "#3f8a4d",
+    negative = "#a83e3e",
+    info = "#0070a8",
+    warn = "#a06a1e",
+  },
+  terminal = {
+    "#dcdcdc",
+    "#a83e3e",
+    "#3f8a4d",
+    "#a06a1e",
+    "#3a7ba8",
+    "#7a3e90",
+    "#0070a8",
+    "#303030",
+    "#a8a8a8",
+    "#c24a4a",
+    "#4ea05c",
+    "#b57a2a",
+    "#4a8cba",
+    "#8c4ca3",
+    "#0088c8",
+    "#141414",
+  },
+})
+
+-- Legacy keys retained so existing colors/darkwing.lua and colors/lightwing.lua
+-- keep working. `dark` → voodoo-equivalent is the wrong mapping — the original
+-- darkwing background was #000000 (AMOLED), so `dark` aliases voodoo and
+-- `light` aliases little_wing. If the user wants joe, use :colorscheme joe.
+M.dark = M.voodoo
+M.light = M.little_wing
 
 return M
